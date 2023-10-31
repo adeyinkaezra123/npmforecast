@@ -12,8 +12,8 @@ from templates.mindsdb_queries import SQL_PACKAGE_QUERY
 
 
 MINDSDB_HOST = 'https://cloud.mindsdb.com'
-MINDSDB_USERNAME = st.secrets['MINDSDB_USERNAME']
-MINDSDB_PASSWORD = st.secrets['MINDSDB_PASSWORD']
+MINDSDB_USERNAME = st.secrets['mindsdb_username']
+MINDSDB_PASSWORD = st.secrets['mindsdb_password']
 
 class MindsDB:
     """
