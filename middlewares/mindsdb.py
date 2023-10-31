@@ -1,6 +1,6 @@
-from getpass import getuser
 from typing import Any
 import mindsdb_sdk
+import streamlit as st
 from mindsdb_sdk.server import Server
 from mindsdb_sdk.databases import Database
 from pandas import DataFrame
@@ -8,16 +8,12 @@ from requests.exceptions import HTTPError, ConnectionError
 from exceptions.auth import CredentialsError
 from exceptions.connection import NetworkError
 from templates.mindsdb_queries import SQL_PACKAGE_QUERY
-from typing import Union, List
-import os
-from dotenv import load_dotenv
-
 
 
 
 MINDSDB_HOST = 'https://cloud.mindsdb.com'
-MINDSDB_USERNAME = os.getenv('MINDSDB_USERNAME')
-MINDSDB_PASSWORD = os.getenv('MINDSDB_PASSWORD')
+MINDSDB_USERNAME = st.secrets['MINDSDB_USERNAME']
+MINDSDB_PASSWORD = st.secrets['MINDSDB_PASSWORD']
 
 class MindsDB:
     """

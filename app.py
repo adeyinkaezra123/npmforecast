@@ -1,10 +1,6 @@
 from streamlit_tags import st_tags
 import streamlit as st
 import mimetypes
-import os
-import mindsdb_sdk
-from dotenv import load_dotenv
-from typing import Union, List
 import pandas as pd
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
@@ -14,13 +10,13 @@ from middlewares.mindsdb import MindsDB
 
 MAX_PACKAGES = 5
 PREDICTION_OPTIONS = ('1 Week', '1 Month', "3 Months", '6 Months', '1 Year', "2 Years")
-MINDSDB_USERNAME = os.getenv('MINDSDB_USERNAME')
-MINDSDB_PASSWORD = os.getenv('MINDSDB_PASSWORD')
+MINDSDB_USERNAME = st.secrets['MINDSDB_USERNAME']
+MINDSDB_PASSWORD = st.secrets['MINDSDB_PASSWORD']
 
 mimetypes.add_type('application/javascript', '.js')
 mimetypes.add_type('text/css', '.css')
 
-load_dotenv()
+
 st.set_page_config(page_title="NPM Forecast", page_icon="✨", layout="wide")
 
 
