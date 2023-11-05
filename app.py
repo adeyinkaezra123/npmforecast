@@ -33,6 +33,7 @@ mindsdb = st.session_state['mindsdb_instance']
 chart = None
 def predict_package_downloads(packages: List[str], prediction_date):
     st.session_state['can_predict'] = False
+    packages = list(set(packages))
     try:
         # Upload downloads data and create prediction models for each package
         toast_msg = st.toast('Retrieving package details...', icon="🎁")
