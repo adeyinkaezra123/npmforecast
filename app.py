@@ -52,7 +52,7 @@ def predict_package_downloads(packages: List[str], prediction_date):
                 prediction_model = mindsdb.server.models.get(f"{model}_prediction_model")
                 model_status = prediction_model.get_status()
                 if model_status == 'error':
-                    prediction_model.retrain(query=f"SELECT * FROM files.{model}")
+                    prediction_model.retrain()
                 training_status.append(model_status)
                 print(training_status)
 

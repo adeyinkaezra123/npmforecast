@@ -46,8 +46,6 @@ class MindsDB:
         authorizes the email and password with MindsDB's host
         """
         try:
-            # self.server = mindsdb_sdk.connect('http://127.0.0.1:47334')
-
             self.server = mindsdb_sdk.connect(
                 MINDSDB_HOST,
                 login=self.email,
@@ -91,7 +89,7 @@ class MindsDB:
             response = requests.get(f"{NPM_PACKAGES_API}/{','.join(packages)}")
             if response.status_code == 200:
                 package_downloads = response.json()
-                package_data.append(package_downloads)
+                package_data = list(package_downloads.values())
             else:
                 print(f"Failed to fetch package data for: {response.status_code}")
         return package_data
@@ -115,7 +113,7 @@ class MindsDB:
        
     def create_prediction_model_for(self, package_name: str, prediction_days:str):
         converted_prediction_days = convert_to_days(prediction_days)
-        print(package_name)
+        print(f"Creating model for {package_name}")
         try:
             try:
                 self.server.models.drop(f'{package_name}_prediction_model')
@@ -135,13 +133,7 @@ class MindsDB:
                 }
             )
             return model
-        #     request = self.database.query(
-        #         MODEL_CREATION_QUERY.substitute(
-        #                 package=package_name,
-        #                 prediction_date=converted_prediction_days
-        #         )
-        # )
-        #     return request.fetch()
+        
         except Exception as e:
             st.error(body=f"Cannot create a prediction model for {package_name}", icon="🚨")
             print("Error encountered: ", e)
@@ -173,51 +165,3 @@ class MindsDB:
             template="plotly_dark",
         )
         return fig
-
-    # def get_package_data(self, package: Union[str, List[str]], prediction_days: str):
-    #     if type(package) == 'list':
-    #         pass
-    #     query = self.database.query(
-    #     f'SELECT date, downloads FROM pypi_datasource.overall WHERE package="{package}" AND mirrors=true limit 500'
-    # )
-    #     overall_df = query.fetch()
-
-    #     converted_prediction_days = convert_to_days(prediction_days)
-    #     predicted_dataframe = pd.DataFrame(columns=["date", "downloads"])
-    #     today = datetime.today()
-    #     prediction_date = (today - timedelta(days=180)).date()
-    #     for i in range(converted_prediction_days):
-    #         query = self.database.query(
-    #             f'SELECT date, downloads FROM mindsdb.pypi_model WHERE date="{prediction_date}"'
-    #         )
-    #         predicted_value = query.fetch()
-    #         current_date = (today + timedelta(days=i)).date()
-    #         predicted_dataframe = pd.concat([predicted_dataframe, query.fetch()], ignore_index=True)
-    #     fig = go.Figure()
-    #     # fig.add_trace(
-    #     #     go.Scatter(
-    #     #         x=overall_df["date"], y=overall_df["downloads"], mode="lines", name="Data"
-    #     #     )
-    #     # )
-    #     fig.add_trace(
-    #     go.Scatter(
-    #         x=predicted_dataframe["date"],
-    #         y=predicted_dataframe["downloads"],
-    #         mode="lines",
-    #         name=f"{package.title()}",
-    #     )
-    # )
-    #     fig.update_layout(
-    #         title="NPM Module Download Rate Prediction",
-    #         xaxis_title="Timeframe",
-    #         yaxis_title="Estimated Downloads",
-    #         template="plotly_dark",
-    #     )
-    #     print(fig)
-    #     return fig
-    # # def get_multiple_package_data(self, packages: List[str], prediction_days: str):
-    # #     fig = go.Figure()
-    # #     for package in packages:
-    # #         print(package)
-    # #         single_fig = self.get_multiple_package_data(package, prediction_days)
-    # #         fig.add
